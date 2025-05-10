@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}خطأ في مسح الباركود{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="h4 mb-0"><i class="fas fa-exclamation-triangle"></i> خطأ في مسح الباركود</h2>
+                </div>
+                <div class="card-body text-center">
+                    <p class="lead mb-4">{{ error }}</p>
+                    
+                    <div class="alert alert-info mb-4">
+                        <p class="mb-0">لم يتم العثور على الباركود <strong>{{ barcode }}</strong> في النظام.</p>
+                    </div>
+                    
+                    {% if user.is_authenticated %}
+                    <p>هل ترغب في إنشاء جهاز جديد بهذا الباركود؟</p>
+                    <a href="{% url 'inventory:device_create' %}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> إنشاء جهاز جديد
+                    </a>
+                    {% endif %}
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-home"></i> العودة إلى لوحة التحكم
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

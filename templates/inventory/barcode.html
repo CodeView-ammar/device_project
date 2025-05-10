@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}باركود - {{ device.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h2 class="h5 mb-0"><i class="fas fa-qrcode"></i> رمز QR للجهاز</h2>
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="mb-3">{{ device.name }}</h3>
+                    <p class="text-muted mb-4">{{ device.device_type.name }} - {{ device.model }}</p>
+                    
+                    <div class="bg-light p-4 mb-4">
+                        <!-- SVG QR Code content will be rendered here -->
+                        {{ barcode_svg|safe }}
+                        
+                        <!-- QR Code ID text -->
+
+                    </div>
+                    
+                    <div class="alert alert-info mb-4">
+                        <h5><i class="fas fa-info-circle"></i> رابط المسح</h5>
+                        <p class="mb-1">عند مسح رمز QR هذا، سيتم توجيهك للرابط التالي للوصول إلى معلومات الجهاز:</p>
+                        <div class="input-group mt-2" dir="ltr">
+                            <input type="text" class="form-control" value="{{ request.scheme }}://{{ request.get_host }}{% url 'inventory:scan_barcode' barcode=device.barcode %}" id="scanUrl" readonly>
+                            <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">
+                                <i class="fas fa-copy"></i> نسخ
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <!-- <p><strong>الرقم التسلسلي:</strong> {{ device.serial_number }}</p> -->
+                        <p><strong>الحالة:</strong> 
+                            {% if device.status == 'active' %}
+                            نشط
+                            {% elif device.status == 'maintenance' %}
+                            قيد الصيانة
+                            {% elif device.status == 'repair' %}
+                            قيد الإصلاح
+                            {% elif device.status == 'retired' %}
+                            خارج الخدمة
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button class="btn btn-primary" onclick="window.print();">
+                            <i class="fas fa-print"></i> طباعة رمز QR
+                        </button>
+                        <a href="{% url 'inventory:scan_barcode' barcode=device.barcode %}" class="btn btn-success">
+                            <i class="fas fa-search"></i> اختبار رابط المسح
+                        </a>
+                        <a href="{% url 'inventory:device_detail' pk=device.id %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> العودة إلى الجهاز
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .card, .card * {
+            visibility: visible;
+        }
+        .card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            box-shadow: none !important;
+        }
+        .btn, .alert, .input-group {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function copyToClipboard() {
+        var copyText = document.getElementById("scanUrl");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        
+        // Show a small notification that it was copied
+        var btn = copyText.nextElementSibling;
+        var originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> تم النسخ!';
+        setTimeout(function() {
+            btn.innerHTML = originalHtml;
+        }, 2000);
+    }
+</script>
+{% endblock %}

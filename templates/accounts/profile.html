@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile" %} - {% trans "Device Management System" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4">
+            <!-- Profile Card -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{% trans "User Profile" %}</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-user-circle fa-5x text-primary"></i>
+                    </div>
+                    <h5 class="my-2">{{ user.get_full_name|default:user.username }}</h5>
+                    <p class="text-muted">{{ user.email }}</p>
+                    {% if user.is_staff %}
+                        <span class="badge bg-success">{% trans "Staff" %}</span>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        <span class="badge bg-danger">{% trans "Admin" %}</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Permissions Card -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{% trans "Permissions" %}</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% if perms.inventory.view_device %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {% trans "View Devices" %}
+                                <i class="fas fa-check-circle text-success"></i>
+                            </li>
+                        {% endif %}
+                        {% if perms.inventory.add_device %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {% trans "Add Devices" %}
+                                <i class="fas fa-check-circle text-success"></i>
+                            </li>
+                        {% endif %}
+                        {% if perms.inventory.change_device %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {% trans "Edit Devices" %}
+                                <i class="fas fa-check-circle text-success"></i>
+                            </li>
+                        {% endif %}
+                        {% if perms.inventory.delete_device %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {% trans "Delete Devices" %}
+                                <i class="fas fa-check-circle text-success"></i>
+                            </li>
+                        {% endif %}
+                        {% if perms.inventory.view_devicetype %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {% trans "View Device Types" %}
+                                <i class="fas fa-check-circle text-success"></i>
+                            </li>
+                        {% endif %}
+                        {% if perms.inventory.add_devicetype %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {% trans "Add Device Types" %}
+                                <i class="fas fa-check-circle text-success"></i>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-8">
+            <!-- Account Details Card -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{% trans "Account Details" %}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 fw-bold">{% trans "Username" %}</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user.username }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 fw-bold">{% trans "Full Name" %}</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user.get_full_name|default:"-" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 fw-bold">{% trans "Email" %}</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user.email|default:"-" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 fw-bold">{% trans "Last Login" %}</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user.last_login }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 fw-bold">{% trans "Date Joined" %}</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user.date_joined }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity Card -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{% trans "Recent Activity" %}</h5>
+                </div>
+                <div class="card-body">
+                    {% with user_devices=user.created_devices.all|slice:":5" %}
+                        {% if user_devices %}
+                            <h6 class="mb-3">{% trans "Recently Created Devices" %}</h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>{% trans "Name" %}</th>
+                                            <th>{% trans "Type" %}</th>
+                                            <th>{% trans "Date" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for device in user_devices %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'inventory:device_detail' device.id %}">
+                                                        {{ device.name }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ device.device_type.name }}</td>
+                                                <td>{{ device.created_at|date:"Y-m-d" }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                {% trans "You haven't created any devices yet." %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

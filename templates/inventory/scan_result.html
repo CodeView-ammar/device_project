@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block title %}Device: {{ device.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-primary text-white">
+            <h2 class="h4 mb-0"><i class="fas fa-laptop"></i> {{ device.name }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="h5 mb-3">معلومات الجهاز</h3>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th style="width: 40%">النوع</th>
+                                <td>{{ device.device_type.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>الموديل</th>
+                                <td>{{ device.model }}</td>
+                            </tr>
+                            <tr>
+                                <th>الرقم التسلسلي</th>
+                                <td>{{ device.serial_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>الحالة</th>
+                                <td>
+                                    {% if device.status == 'active' %}
+                                    <span class="badge bg-success">نشط</span>
+                                    {% elif device.status == 'maintenance' %}
+                                    <span class="badge bg-warning">قيد الصيانة</span>
+                                    {% elif device.status == 'repair' %}
+                                    <span class="badge bg-danger">قيد الإصلاح</span>
+                                    {% elif device.status == 'retired' %}
+                                    <span class="badge bg-secondary">خارج الخدمة</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>الموقع</th>
+                                <td>{{ device.location|default:"غير محدد" }}</td>
+                            </tr>
+                            {% if last_maintenance %}
+                            <tr>
+                                <th>آخر صيانة</th>
+                                <td>{{ last_maintenance.maintenance_date|date:"F d, Y" }}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="h5 mb-3">سجل الصيانة</h3>
+                    {% if maintenance_records %}
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>النوع</th>
+                                    <th>تمت بواسطة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in maintenance_records %}
+                                <tr>
+                                    <td>{{ record.maintenance_date|date:"M d, Y" }}</td>
+                                    <td>
+                                        {% if record.maintenance_type == 'routine' %}
+                                        <span class="badge bg-info">فحص دوري</span>
+                                        {% elif record.maintenance_type == 'repair' %}
+                                        <span class="badge bg-danger">إصلاح</span>
+                                        {% elif record.maintenance_type == 'upgrade' %}
+                                        <span class="badge bg-success">ترقية</span>
+                                        {% else %}
+                                        <span class="badge bg-secondary">أخرى</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ record.performed_by }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> No maintenance records found.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Maintenance Form -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="h5 mb-0"><i class="fas fa-tools"></i> إضافة سجل صيانة</h3>
+        </div>
+        <div class="card-body">
+            {% if is_authenticated %}
+                {% if can_add_maintenance %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.maintenance_date.id_for_label }}" class="form-label">تاريخ الصيانة *</label>
+                            {{ form.maintenance_date }}
+                            {% if form.maintenance_date.errors %}
+                            <div class="text-danger small">
+                                {% for error in form.maintenance_date.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.maintenance_type.id_for_label }}" class="form-label">نوع الصيانة *</label>
+                            {{ form.maintenance_type }}
+                            {% if form.maintenance_type.errors %}
+                            <div class="text-danger small">
+                                {% for error in form.maintenance_type.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.performed_by.id_for_label }}" class="form-label">تمت بواسطة *</label>
+                            {{ form.performed_by }}
+                            {% if form.performed_by.errors %}
+                            <div class="text-danger small">
+                                {% for error in form.performed_by.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.next_maintenance_date.id_for_label }}" class="form-label">تاريخ الصيانة القادمة</label>
+                            {{ form.next_maintenance_date }}
+                            {% if form.next_maintenance_date.errors %}
+                            <div class="text-danger small">
+                                {% for error in form.next_maintenance_date.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">وصف الصيانة *</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                        <div class="text-danger small">
+                            {% for error in form.description.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> حفظ سجل الصيانة
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> ليس لديك الصلاحية لإضافة سجل صيانة. يرجى التواصل مع المسؤول للحصول على الصلاحية المناسبة.
+                </div>
+                {% endif %}
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> يجب أن تكون <a href="{% url 'accounts:login' %}" class="alert-link">مسجل الدخول</a> لإضافة سجل صيانة.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="text-center my-4">
+        <a href="{% url 'inventory:device_detail' pk=device.id %}" class="btn btn-primary">
+            <i class="fas fa-search"></i> عرض التفاصيل الكاملة
+        </a>
+        {% if is_authenticated %}
+        <a href="{% url 'inventory:device_barcode' pk=device.id %}" class="btn btn-secondary">
+            <i class="fas fa-barcode"></i> عرض وطباعة الباركود
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

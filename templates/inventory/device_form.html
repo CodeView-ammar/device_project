@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{{ title }} - Device Management System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h2 class="h5 mb-0">
+                        {% if device %}
+                        <i class="fas fa-edit"></i> Edit Device: {{ device.name }}
+                        {% else %}
+                        <i class="fas fa-plus-circle"></i> Add New Device
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.name.id_for_label }}" class="form-label">{% trans "Device Name" %} *</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.device_type.id_for_label }}" class="form-label">Device Type *</label>
+                                {{ form.device_type }}
+                                {% if form.device_type.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.device_type.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.model.id_for_label }}" class="form-label">Model *</label>
+                                {{ form.model }}
+                                {% if form.model.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.model.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.serial_number.id_for_label }}" class="form-label">Serial Number *</label>
+                                {{ form.serial_number }}
+                                {% if form.serial_number.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.serial_number.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.status.id_for_label }}" class="form-label">Status *</label>
+                                {{ form.status }}
+                                {% if form.status.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.status.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.location.id_for_label }}" class="form-label">Location</label>
+                                {{ form.location }}
+                                {% if form.location.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.location.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.acquisition_date.id_for_label }}" class="form-label">Acquisition Date *</label>
+                                {{ form.acquisition_date }}
+                                {% if form.acquisition_date.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.acquisition_date.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.warranty_expiry.id_for_label }}" class="form-label">Warranty Expiry</label>
+                                {{ form.warranty_expiry }}
+                                {% if form.warranty_expiry.errors %}
+                                <div class="text-danger small">
+                                    {% for error in form.warranty_expiry.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                            <div class="text-danger small">
+                                {% for error in form.description.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.additional_info.id_for_label }}" class="form-label">Additional Information</label>
+                            {{ form.additional_info }}
+                            <div class="form-text text-muted">
+                                Enter as JSON format. Example: {"CPU": "Intel i5", "RAM": "8GB", "Storage": "256GB SSD"}
+                            </div>
+                            {% if form.additional_info.errors %}
+                            <div class="text-danger small">
+                                {% for error in form.additional_info.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% if device %}{% url 'inventory:device_detail' pk=device.id %}{% else %}{% url 'inventory:device_list' %}{% endif %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Device
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

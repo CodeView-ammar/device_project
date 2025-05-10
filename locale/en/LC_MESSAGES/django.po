@@ -1,0 +1,230 @@
+# English translation file for device manager project.
+# Copyright (C) 2025
+# This file is distributed under the same license as the familytree_project package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-05 18:00+0000\n"
+"PO-Revision-Date: 2025-05-05 18:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# General terms
+msgid "Device Management System"
+msgstr "Device Management System"
+
+msgid "English"
+msgstr "English"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+# Navigation items
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Devices"
+msgstr "Devices"
+
+msgid "Add Device"
+msgstr "Add Device"
+
+msgid "Device Types"
+msgstr "Device Types"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Login"
+msgstr "Login"
+
+# Login page
+msgid "Username"
+msgstr "Username"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Contact administrator if you need an account"
+msgstr "Contact administrator if you need an account"
+
+# Device statuses
+msgid "Active"
+msgstr "Active"
+
+msgid "Under Maintenance"
+msgstr "Under Maintenance"
+
+msgid "In Repair"
+msgstr "In Repair"
+
+msgid "Retired"
+msgstr "Retired"
+
+# Device details
+msgid "Serial Number"
+msgstr "Serial Number"
+
+msgid "Model"
+msgstr "Model"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Location"
+msgstr "Location"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Acquisition Date"
+msgstr "Acquisition Date"
+
+msgid "Warranty Expiry"
+msgstr "Warranty Expiry"
+
+msgid "Created At"
+msgstr "Created At"
+
+msgid "Updated At"
+msgstr "Updated At"
+
+msgid "Created By"
+msgstr "Created By"
+
+# Maintenance
+msgid "Maintenance Records"
+msgstr "Maintenance Records"
+
+msgid "Add Maintenance Record"
+msgstr "Add Maintenance Record"
+
+msgid "Maintenance Date"
+msgstr "Maintenance Date"
+
+msgid "Maintenance Type"
+msgstr "Maintenance Type"
+
+msgid "Performed By"
+msgstr "Performed By"
+
+msgid "Cost"
+msgstr "Cost"
+
+msgid "Next Maintenance Date"
+msgstr "Next Maintenance Date"
+
+# Maintenance types
+msgid "Routine Check"
+msgstr "Routine Check"
+
+msgid "Repair"
+msgstr "Repair"
+
+msgid "Upgrade"
+msgstr "Upgrade"
+
+msgid "Other"
+msgstr "Other"
+
+# Dashboard
+msgid "Total Devices"
+msgstr "Total Devices"
+
+msgid "Active Devices"
+msgstr "Active Devices"
+
+msgid "Devices Under Maintenance"
+msgstr "Devices Under Maintenance"
+
+msgid "Devices In Repair"
+msgstr "Devices In Repair"
+
+msgid "Retired Devices"
+msgstr "Retired Devices"
+
+msgid "Devices by Type"
+msgstr "Devices by Type"
+
+msgid "Devices by Status"
+msgstr "Devices by Status"
+
+msgid "Recent Devices"
+msgstr "Recent Devices"
+
+msgid "Upcoming Maintenance"
+msgstr "Upcoming Maintenance"
+
+# Buttons and actions
+msgid "Save"
+msgstr "Save"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "View"
+msgstr "View"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Generate Barcode"
+msgstr "Generate Barcode"
+
+msgid "Print Barcode"
+msgstr "Print Barcode"
+
+# Messages
+msgid "Device has been created."
+msgstr "Device has been created."
+
+msgid "Device has been updated."
+msgstr "Device has been updated."
+
+msgid "Device has been deleted."
+msgstr "Device has been deleted."
+
+msgid "Maintenance record has been added."
+msgstr "Maintenance record has been added."
+
+msgid "Maintenance record has been updated."
+msgstr "Maintenance record has been updated."
+
+msgid "Maintenance record has been deleted."
+msgstr "Maintenance record has been deleted."
+
+# Scan result
+msgid "Device found"
+msgstr "Device found"
+
+msgid "Device not found"
+msgstr "Device not found"
+
+msgid "No device was found with the scanned barcode"
+msgstr "No device was found with the scanned barcode"
+
+msgid "Device Details"
+msgstr "Device Details"
+
+msgid "Last Maintenance"
+msgstr "Last Maintenance"

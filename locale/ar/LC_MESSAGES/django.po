@@ -1,0 +1,230 @@
+# Arabic translation file for device manager project.
+# Copyright (C) 2025
+# This file is distributed under the same license as the familytree_project package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-05 18:00+0000\n"
+"PO-Revision-Date: 2025-05-05 18:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+# General terms
+msgid "Device Management System"
+msgstr "نظام إدارة الأجهزة"
+
+msgid "English"
+msgstr "الإنجليزية"
+
+msgid "Arabic"
+msgstr "العربية"
+
+# Navigation items
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Devices"
+msgstr "الأجهزة"
+
+msgid "Add Device"
+msgstr "إضافة جهاز"
+
+msgid "Device Types"
+msgstr "أنواع الأجهزة"
+
+msgid "Profile"
+msgstr "الملف الشخصي"
+
+msgid "Admin"
+msgstr "الإدارة"
+
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+# Login page
+msgid "Username"
+msgstr "اسم المستخدم"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "Contact administrator if you need an account"
+msgstr "تواصل مع المسؤول إذا كنت بحاجة إلى حساب"
+
+# Device statuses
+msgid "Active"
+msgstr "نشط"
+
+msgid "Under Maintenance"
+msgstr "تحت الصيانة"
+
+msgid "In Repair"
+msgstr "قيد الإصلاح"
+
+msgid "Retired"
+msgstr "متقاعد"
+
+# Device details
+msgid "Serial Number"
+msgstr "الرقم التسلسلي"
+
+msgid "Model"
+msgstr "الطراز"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Location"
+msgstr "الموقع"
+
+msgid "Description"
+msgstr "الوصف"
+
+msgid "Acquisition Date"
+msgstr "تاريخ الاقتناء"
+
+msgid "Warranty Expiry"
+msgstr "انتهاء الضمان"
+
+msgid "Created At"
+msgstr "تم الإنشاء في"
+
+msgid "Updated At"
+msgstr "تم التحديث في"
+
+msgid "Created By"
+msgstr "تم الإنشاء بواسطة"
+
+# Maintenance
+msgid "Maintenance Records"
+msgstr "سجلات الصيانة"
+
+msgid "Add Maintenance Record"
+msgstr "إضافة سجل صيانة"
+
+msgid "Maintenance Date"
+msgstr "تاريخ الصيانة"
+
+msgid "Maintenance Type"
+msgstr "نوع الصيانة"
+
+msgid "Performed By"
+msgstr "تم تنفيذه بواسطة"
+
+msgid "Cost"
+msgstr "التكلفة"
+
+msgid "Next Maintenance Date"
+msgstr "تاريخ الصيانة التالي"
+
+# Maintenance types
+msgid "Routine Check"
+msgstr "فحص روتيني"
+
+msgid "Repair"
+msgstr "إصلاح"
+
+msgid "Upgrade"
+msgstr "ترقية"
+
+msgid "Other"
+msgstr "أخرى"
+
+# Dashboard
+msgid "Total Devices"
+msgstr "إجمالي الأجهزة"
+
+msgid "Active Devices"
+msgstr "الأجهزة النشطة"
+
+msgid "Devices Under Maintenance"
+msgstr "الأجهزة تحت الصيانة"
+
+msgid "Devices In Repair"
+msgstr "الأجهزة قيد الإصلاح"
+
+msgid "Retired Devices"
+msgstr "الأجهزة المتقاعدة"
+
+msgid "Devices by Type"
+msgstr "الأجهزة حسب النوع"
+
+msgid "Devices by Status"
+msgstr "الأجهزة حسب الحالة"
+
+msgid "Recent Devices"
+msgstr "الأجهزة الحديثة"
+
+msgid "Upcoming Maintenance"
+msgstr "الصيانة القادمة"
+
+# Buttons and actions
+msgid "Save"
+msgstr "حفظ"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "View"
+msgstr "عرض"
+
+msgid "Search"
+msgstr "بحث"
+
+msgid "Generate Barcode"
+msgstr "توليد الباركود"
+
+msgid "Print Barcode"
+msgstr "طباعة الباركود"
+
+# Messages
+msgid "Device has been created."
+msgstr "تم إنشاء الجهاز."
+
+msgid "Device has been updated."
+msgstr "تم تحديث الجهاز."
+
+msgid "Device has been deleted."
+msgstr "تم حذف الجهاز."
+
+msgid "Maintenance record has been added."
+msgstr "تمت إضافة سجل الصيانة."
+
+msgid "Maintenance record has been updated."
+msgstr "تم تحديث سجل الصيانة."
+
+msgid "Maintenance record has been deleted."
+msgstr "تم حذف سجل الصيانة."
+
+# Scan result
+msgid "Device found"
+msgstr "تم العثور على الجهاز"
+
+msgid "Device not found"
+msgstr "لم يتم العثور على الجهاز"
+
+msgid "No device was found with the scanned barcode"
+msgstr "لم يتم العثور على جهاز بهذا الباركود"
+
+msgid "Device Details"
+msgstr "تفاصيل الجهاز"
+
+msgid "Last Maintenance"
+msgstr "آخر صيانة"

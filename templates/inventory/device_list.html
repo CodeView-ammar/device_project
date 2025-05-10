@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}Device List - Device Management System{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-laptop"></i> Device List</h1>
+        <a href="{% url 'inventory:device_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Add New Device
+        </a>
+    </div>
+    
+    <!-- Search and Filter -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search devices..." value="{{ query|default:'' }}">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <select name="device_type" class="form-select" onchange="this.form.submit()">
+                        <option value="all" {% if not selected_type %}selected{% endif %}>All Device Types</option>
+                        {% for type in device_types %}
+                        <option value="{{ type.id }}" {% if selected_type == type.id|stringformat:"s" %}selected{% endif %}>
+                            {{ type.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+                        <option value="all" {% if not selected_status %}selected{% endif %}>All Statuses</option>
+                        <option value="active" {% if selected_status == 'active' %}selected{% endif %}>Active</option>
+                        <option value="maintenance" {% if selected_status == 'maintenance' %}selected{% endif %}>Under Maintenance</option>
+                        <option value="repair" {% if selected_status == 'repair' %}selected{% endif %}>In Repair</option>
+                        <option value="retired" {% if selected_status == 'retired' %}selected{% endif %}>Retired</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-2">
+                    <a href="{% url 'inventory:device_list' %}" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-sync-alt"></i> Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Device List Table -->
+    <div class="card">
+        <div class="card-body">
+            {% if devices %}
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Model</th>
+                            <th>Serial Number</th>
+                            <th>QR Code</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                            <th>Acquisition Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for device in devices %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'inventory:device_detail' pk=device.id %}">
+                                    {{ device.name }}
+                                </a>
+                            </td>
+                            <td>{{ device.device_type.name }}</td>
+                            <td>{{ device.model }}</td>
+                            <td>{{ device.serial_number }}</td>
+                            <td class="text-center">
+                                <div class="d-flex flex-column align-items-center">
+                                    <div style="font-size: 0.7rem;">{{ device.barcode|truncatechars:8 }}</div>
+                                    <a href="{% url 'inventory:device_barcode' pk=device.id %}" class="btn btn-sm btn-outline-primary mt-1">
+                                        <i class="fas fa-qrcode"></i> طباعة
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                {% if device.status == 'active' %}
+                                <span class="badge bg-success">Active</span>
+                                {% elif device.status == 'maintenance' %}
+                                <span class="badge bg-warning">Maintenance</span>
+                                {% elif device.status == 'repair' %}
+                                <span class="badge bg-danger">Repair</span>
+                                {% elif device.status == 'retired' %}
+                                <span class="badge bg-secondary">Retired</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ device.location }}</td>
+                            <td>{{ device.acquisition_date|date:"M d, Y" }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{% url 'inventory:device_detail' pk=device.id %}" class="btn btn-info" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'inventory:device_update' pk=device.id %}" class="btn btn-warning" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'inventory:device_barcode' pk=device.id %}" class="btn btn-secondary" title="QR Code">
+                                        <i class="fas fa-qrcode"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> No devices found matching your criteria.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/device_list.js"></script>
+{% endblock %}
