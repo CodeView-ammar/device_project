@@ -154,11 +154,6 @@
                             </div>
                             {% endif %}
                         </div>
-                        <h1>نقاط الفحص</h1>
-                        {% for checkpoint in checkpoint %}
-                            <li>{{ checkpoint.description }} - {{ checkpoint.is_checked|yesno:"✔️,❌" }}</li>
-                        {% endfor %}
-                    </ul>
                         <div class="col-md-6">
                             <label for="{{ form.next_maintenance_date.id_for_label }}" class="form-label">تاريخ الصيانة القادمة</label>
                             {{ form.next_maintenance_date }}

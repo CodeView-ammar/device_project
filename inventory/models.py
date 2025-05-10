@@ -90,19 +90,19 @@ class MaintenanceRecord(models.Model):
         ordering = ['-maintenance_date']
 
 
-class MaintenanceCheckpoint(models.Model):
-    MaintenanceRecord = models.ForeignKey(MaintenanceRecord, on_delete=models.CASCADE, related_name='checkpoints')      
-    description = models.CharField(max_length=255)
-    is_checked = models.BooleanField(default=False)
+# class MaintenanceCheckpoint(models.Model):
+#     MaintenanceRecord = models.ForeignKey(MaintenanceRecord, on_delete=models.CASCADE, related_name='checkpoints')      
+#     description = models.CharField(max_length=255)
+#     is_checked = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.description
+#     def __str__(self):
+#         return self.description
 
 
 
-class Checkpoint(models.Model):
-    description = models.CharField(max_length=255)
-    is_checked = models.BooleanField(default=False)
+# class Checkpoint(models.Model):
+#     description = models.CharField(max_length=255)
+#     is_checked = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.description
+#     def __str__(self):
+#         return self.description

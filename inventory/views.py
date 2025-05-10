@@ -497,7 +497,6 @@ def scan_barcode(request, barcode):
             'last_maintenance': last_maintenance,
             'next_maintenance': next_maintenance,
             'form': form,
-            "checkpoint":checkpoint,
             'is_authenticated': request.user.is_authenticated,
             'can_add_maintenance': can_add_maintenance
         }
