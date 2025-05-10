@@ -452,7 +452,7 @@ def scan_barcode(request, barcode):
         last_maintenance = maintenance_records.first()
 
         
-        next_maintenance = device.get_next_maintenance_date()
+        next_maintenance = device.get_next_maintenance_date_first()
 
         checkpoint_list = Checkpoint.objects.all()
 

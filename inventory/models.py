@@ -54,8 +54,14 @@ class Device(models.Model):
     def get_maintenance_records(self):
         return self.maintenance_records.order_by('-maintenance_date')
     
-    def get_next_maintenance_date(self):
+    def get_next_maintenance_date_first(self):
         maintenance = self.maintenance_records.order_by('next_maintenance_date').filter(device=self).first()
+        
+        return maintenance.next_maintenance_date if maintenance else None
+    def get_next_maintenance_date(self):
+        maintenance = self.maintenance_records.filter(
+            next_maintenance_date__gt=timezone.now()
+        ).order_by('next_maintenance_date').first()
         
         return maintenance.next_maintenance_date if maintenance else None
     
