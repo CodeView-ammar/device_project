@@ -55,12 +55,14 @@ class MaintenanceRecordForm(forms.ModelForm):
             'performed_by', 'cost', 'next_maintenance_date'
         ]
         widgets = {
-            'maintenance_date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            'maintenance_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'maintenance_type': forms.Select(attrs={'class': 'form-select'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'performed_by': forms.TextInput(attrs={'class': 'form-control'}),
             'cost': forms.NumberInput(attrs={'class': 'form-control'}),
-            'next_maintenance_date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'})
+            'next_maintenance_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+
+            # 'next_maintenance_date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'})
         }
     
     def __init__(self, *args, **kwargs):
@@ -70,7 +72,7 @@ class MaintenanceRecordForm(forms.ModelForm):
         
         # Set default maintenance date to now
         if not kwargs.get('instance'):
-            self.initial['maintenance_date'] = timezone.now().strftime('%Y-%m-%dT%H:%M')
+            self.initial['maintenance_date'] = timezone.now().strftime('%Y-%m-%d')
 
 
 class DeviceTypeForm(forms.ModelForm):
@@ -90,4 +92,4 @@ class DeviceTypeForm(forms.ModelForm):
 class CheckpointForm(forms.ModelForm):
     class Meta:
         model = Checkpoint
-        fields = ['description', 'is_checked']
+        fields = ['description']

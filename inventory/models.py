@@ -18,6 +18,7 @@ class DeviceType(models.Model):
 
 
 class Device(models.Model):
+    
     """Model representing a device in the inventory"""
     STATUS_CHOICES = (
         ('active', 'Active'),
@@ -54,9 +55,7 @@ class Device(models.Model):
         return self.maintenance_records.order_by('-maintenance_date')
     
     def get_next_maintenance_date(self):
-        maintenance = self.maintenance_records.filter(
-            next_maintenance_date__gt=timezone.now()
-        ).order_by('next_maintenance_date').first()
+        maintenance = self.maintenance_records.order_by('next_maintenance_date').filter(device=self).first()
         
         return maintenance.next_maintenance_date if maintenance else None
     
@@ -74,12 +73,12 @@ class MaintenanceRecord(models.Model):
     )
 
     device = models.ForeignKey(Device, on_delete=models.CASCADE, related_name='maintenance_records')
-    maintenance_date = models.DateTimeField(default=timezone.now)
+    maintenance_date = models.DateField(default=timezone.now)
     maintenance_type = models.CharField(max_length=20, choices=MAINTENANCE_TYPE_CHOICES)
     description = models.TextField()
     performed_by = models.CharField(max_length=100)
     cost = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    next_maintenance_date = models.DateTimeField(null=True, blank=True)
+    next_maintenance_date = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -90,19 +89,19 @@ class MaintenanceRecord(models.Model):
         ordering = ['-maintenance_date']
 
 
-# class MaintenanceCheckpoint(models.Model):
-#     MaintenanceRecord = models.ForeignKey(MaintenanceRecord, on_delete=models.CASCADE, related_name='checkpoints')      
-#     description = models.CharField(max_length=255)
-#     is_checked = models.BooleanField(default=False)
+class MaintenanceCheckpoint(models.Model):
+    MaintenanceRecord = models.ForeignKey(MaintenanceRecord, on_delete=models.CASCADE, related_name='checkpoints')      
+    description = models.CharField(max_length=255)
+    is_checked = models.BooleanField(default=False)
 
-#     def __str__(self):
-#         return self.description
+    def __str__(self):
+        return self.description
 
 
 
-# class Checkpoint(models.Model):
-#     description = models.CharField(max_length=255)
-#     is_checked = models.BooleanField(default=False)
+class Checkpoint(models.Model):
+    description = models.CharField(max_length=255)
+    is_checked = models.BooleanField(default=False)
 
-#     def __str__(self):
-#         return self.description
+    def __str__(self):
+        return self.description

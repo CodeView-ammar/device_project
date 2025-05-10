@@ -6,7 +6,7 @@ from django.utils import timezone, translation
 from django.contrib import messages
 from django.conf import settings
 
-from .models import Device, DeviceType, MaintenanceRecord
+from .models import Device, DeviceType,Checkpoint, MaintenanceCheckpoint,MaintenanceRecord
 from .forms import DeviceForm, MaintenanceRecordForm, DeviceTypeForm,CheckpointForm
 from .utils import generate_barcode_svg
 
@@ -437,10 +437,9 @@ def maintenance_stats(request):
     
     return JsonResponse(data)
 
-
 def scan_barcode(request, barcode):
     """
-    Handle barcode scanning functionality
+    Handle barcode scanning functionality.
     When a barcode is scanned, display device details, show maintenance history,
     and provide an option to add a new maintenance record.
     This view can be accessed without login to support public barcode scanning.
@@ -450,22 +449,17 @@ def scan_barcode(request, barcode):
         
         # Get maintenance records for this device, ordered by most recent first
         maintenance_records = device.maintenance_records.order_by('-maintenance_date')
-        # Get the last maintenance record
         last_maintenance = maintenance_records.first()
-        
-        # Get maintenance records for this device, ordered by most recent first
-        next_maintenance_date = device.get_next_maintenance_date()
-        # Get the last maintenance record
-        next_maintenance = next_maintenance_date
-        
 
-        # If the user submitted a quick maintenance form
+        
+        next_maintenance = device.get_next_maintenance_date()
+
+        checkpoint_list = Checkpoint.objects.all()
+
         if request.method == 'POST':
-            # Check if user is logged in
             if not request.user.is_authenticated:
                 return redirect('accounts:login')
-                
-            # Check if user has permission to add maintenance records
+
             if not request.user.has_perm('inventory.add_maintenancerecord'):
                 messages.error(request, 'You do not have permission to add maintenance records.')
                 return redirect('inventory:scan_barcode', barcode=barcode)
@@ -476,42 +470,55 @@ def scan_barcode(request, barcode):
                 maintenance.device = device
                 maintenance.created_by = request.user
                 maintenance.save()
-                
-                # Update device status if needed
+
+                selected_checkpoints = request.POST.getlist('checkpoints')
+                for checkpoint_id in selected_checkpoints:
+                    description = request.POST.get(f'description_{checkpoint_id}', '')
+                    MaintenanceCheckpoint.objects.create(
+                        MaintenanceRecord=maintenance,
+                        description=description,
+                        is_checked=True
+                    )
+
+                for checkpoint in Checkpoint.objects.exclude(id__in=selected_checkpoints):
+                    MaintenanceCheckpoint.objects.create(
+                        MaintenanceRecord=maintenance,
+                        description=checkpoint.description,
+                        is_checked=False
+                    )
+
                 if maintenance.maintenance_type in ['repair', 'routine']:
                     device.status = 'active'
                     device.save()
-                
+
                 messages.success(request, 'تم إضافة سجل الصيانة بنجاح.')
                 return redirect('inventory:scan_barcode', barcode=barcode)
         else:
             form = MaintenanceRecordForm()
-            checkpoint=CheckpointForm()
-        
-        # Check if user has permission to add maintenance records (for UI display)
+
         can_add_maintenance = request.user.is_authenticated and request.user.has_perm('inventory.add_maintenancerecord')
-        
+        maintenance_checkpoints = MaintenanceCheckpoint.objects.filter(
+            MaintenanceRecord=last_maintenance.id
+        ) if last_maintenance else []
         context = {
             'device': device,
-            'maintenance_records': maintenance_records[:5],  # Show only the 5 most recent
+            'maintenance_records': maintenance_records[:5],
             'last_maintenance': last_maintenance,
             'next_maintenance': next_maintenance,
+            'maintenance_checkpoints': maintenance_checkpoints,
             'form': form,
+            'checkpoint': checkpoint_list,
             'is_authenticated': request.user.is_authenticated,
             'can_add_maintenance': can_add_maintenance
         }
-        
+
         return render(request, 'inventory/scan_result.html', context)
-        
+
     except Http404:
-        # Device not found
-        context = {
+        return render(request, 'inventory/scan_error.html', {
             'barcode': barcode,
             'error': 'لم يتم العثور على جهاز بهذا الباركود'
-        }
-        
-        return render(request, 'inventory/scan_error.html', context)
-
+        })
 
 def change_language(request):
     """

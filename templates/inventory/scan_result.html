@@ -57,12 +57,24 @@
                             <tr>
                                 <th>تاريخ الصيانة القادمة</th>
                                 {% if next_maintenance %}
-                                <td>{{ last_maintenance.next_maintenance|date:"F d, Y" }}</td>
+                                <td>{{ next_maintenance }}</td>
                                 {% endif %}
                             </tr>
                             
                         </tbody>
                     </table>
+                    <h3>سجلات نقاط الفحص</h3>
+                    <table class="table table-bordered">
+                        <tbody>
+                            {% for checkpoint in maintenance_checkpoints %}
+                            <tr>
+                                <th style="width: 40%">{{ checkpoint.description }}</th>
+                                <td>{{ checkpoint.is_checked|yesno:"✔️,❌" }}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                    </table>
+                        
                 </div>
                 <div class="col-md-6">
                     <h3 class="h5 mb-3">سجل الصيانة</h3>
@@ -79,7 +91,7 @@
                             <tbody>
                                 {% for record in maintenance_records %}
                                 <tr>
-                                    <td>{{ record.maintenance_date|date:"M d, Y" }}</td>
+                                    <td>{{ record.maintenance_date }}</td>
                                     <td>
                                         {% if record.maintenance_type == 'routine' %}
                                         <span class="badge bg-info">فحص دوري</span>
@@ -153,6 +165,20 @@
                                 {% endfor %}
                             </div>
                             {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="h5 mb-0"><i class="fas fa-tools"></i> نقاط الصيانة</h3>
+                            </div>
+                            {% csrf_token %}
+                            {% for checkpoint in checkpoint %}
+                            <br>
+                            <label>
+                                <input type="checkbox" class="checkbox" name="checkpoints" value="{{ checkpoint.id }}">
+                                {{ checkpoint.description }}
+                                <input type="text" value="{{ checkpoint.description }}" class="" name="description_{{ checkpoint.id }}" placeholder="وصف النقطة" class="form-control" style="display:contents; width: auto;">
+                            </label>
+                        {% endfor %}
                         </div>
                         <div class="col-md-6">
                             <label for="{{ form.next_maintenance_date.id_for_label }}" class="form-label">تاريخ الصيانة القادمة</label>

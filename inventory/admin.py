@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DeviceType, Device, Checkpoint,MaintenanceRecord
+from .models import DeviceType, Device,MaintenanceCheckpoint,MaintenanceRecord,Checkpoint
 
 @admin.register(DeviceType)
 class DeviceTypeAdmin(admin.ModelAdmin):
@@ -8,8 +8,13 @@ class DeviceTypeAdmin(admin.ModelAdmin):
 
 
 @admin.register(Checkpoint)
-class DeviceTypeAdmin(admin.ModelAdmin):
-    list_display = ( 'description',"is_checked")
+class CheckpointAdmin(admin.ModelAdmin):
+    list_display = ( 'description',"is_checked",)
+    search_fields = ('description',)
+
+@admin.register(MaintenanceCheckpoint)
+class MaintenanceCheckpointAdmin(admin.ModelAdmin):
+    list_display = ( 'description',"is_checked",)
     search_fields = ('description',)
 
 
