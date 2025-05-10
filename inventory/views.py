@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.conf import settings
 
 from .models import Device, DeviceType, MaintenanceRecord
-from .forms import DeviceForm, MaintenanceRecordForm, DeviceTypeForm
+from .forms import DeviceForm, MaintenanceRecordForm, DeviceTypeForm,CheckpointForm
 from .utils import generate_barcode_svg
 
 import json
@@ -450,10 +450,15 @@ def scan_barcode(request, barcode):
         
         # Get maintenance records for this device, ordered by most recent first
         maintenance_records = device.maintenance_records.order_by('-maintenance_date')
-        
         # Get the last maintenance record
         last_maintenance = maintenance_records.first()
         
+        # Get maintenance records for this device, ordered by most recent first
+        next_maintenance_date = device.get_next_maintenance_date()
+        # Get the last maintenance record
+        next_maintenance = next_maintenance_date
+        
+
         # If the user submitted a quick maintenance form
         if request.method == 'POST':
             # Check if user is logged in
@@ -481,6 +486,7 @@ def scan_barcode(request, barcode):
                 return redirect('inventory:scan_barcode', barcode=barcode)
         else:
             form = MaintenanceRecordForm()
+            checkpoint=CheckpointForm()
         
         # Check if user has permission to add maintenance records (for UI display)
         can_add_maintenance = request.user.is_authenticated and request.user.has_perm('inventory.add_maintenancerecord')
@@ -489,7 +495,9 @@ def scan_barcode(request, barcode):
             'device': device,
             'maintenance_records': maintenance_records[:5],  # Show only the 5 most recent
             'last_maintenance': last_maintenance,
+            'next_maintenance': next_maintenance,
             'form': form,
+            "checkpoint":checkpoint,
             'is_authenticated': request.user.is_authenticated,
             'can_add_maintenance': can_add_maintenance
         }

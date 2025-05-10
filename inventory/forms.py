@@ -1,5 +1,5 @@
 from django import forms
-from .models import Device, DeviceType, MaintenanceRecord
+from .models import Device, DeviceType, MaintenanceRecord,Checkpoint
 from django.utils import timezone
 
 
@@ -83,3 +83,11 @@ class DeviceTypeForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3})
         }
+
+
+
+
+class CheckpointForm(forms.ModelForm):
+    class Meta:
+        model = Checkpoint
+        fields = ['description', 'is_checked']

@@ -1,10 +1,16 @@
 from django.contrib import admin
-from .models import DeviceType, Device, MaintenanceRecord
+from .models import DeviceType, Device, Checkpoint,MaintenanceRecord
 
 @admin.register(DeviceType)
 class DeviceTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     search_fields = ('name',)
+
+
+@admin.register(Checkpoint)
+class DeviceTypeAdmin(admin.ModelAdmin):
+    list_display = ( 'description',"is_checked")
+    search_fields = ('description',)
 
 
 @admin.register(Device)
@@ -20,3 +26,7 @@ class MaintenanceRecordAdmin(admin.ModelAdmin):
     list_display = ('device', 'maintenance_date', 'maintenance_type', 'performed_by')
     list_filter = ('maintenance_date', 'maintenance_type')
     search_fields = ('device__name', 'device__serial_number', 'description')
+
+
+
+
